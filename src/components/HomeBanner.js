@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const HomeBanner=()=>{
     return(
         <div className="home-banner">
@@ -7,7 +8,7 @@ const HomeBanner=()=>{
           <p className="email-form-title">Ready to watch? Enter your email to create or restart your membership.</p>
           <div className="input-group">
             <input type="text" className="form-control" placeholder="Email Address" />
-            <button className="input-group-button btn-danger text-white">Get Started</button>
+           <Link to={'/login'}> <button className="input-group-button btn-danger text-white">Get Started</button></Link>
           </div>
         </div>
         <div className="shadow"></div>

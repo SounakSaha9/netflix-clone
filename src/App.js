@@ -1,4 +1,5 @@
 import Header from './components/Header'
+import Header1 from './components/Header1';
 import './App.scss';
 import './App.css';
 import React from "react"
@@ -28,9 +29,9 @@ function App() {
         <Header />
         <Login/>
       </React.Fragment>}></Route>
-      <Route path='/dashboard' element={
+      <Route path='/dashboard'  element={
       <React.Fragment>
-        <Header />
+        <Header1  />
         <Banner />
         <List title="Netflix Originals" param="originals"/>
               <List title="Trending Now" param="trending"/>

@@ -2,11 +2,11 @@ import { Link, useNavigate,useLocation } from "react-router-dom";
 import {initializeApp} from 'firebase/app';
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth'
 import {firebaseConfig} from './firebaseConfig.js';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Login=()=>{
     const navigate=useNavigate();
     const location=useLocation();
-    const app=initializeApp(firebaseConfig);
+    initializeApp(firebaseConfig);
     const [email,setEmail]=useState('')
     const [pass,setPass]=useState('')
     const page=location.pathname==='/login'?true:false;
@@ -14,9 +14,29 @@ const Login=()=>{
 
     const [isUserExist,setUserExist]=useState(false)
     const [isEmailUsed,setEmailUsed]=useState(false)
+    const [emailValid,setEmailValid] =useState(true)
+    const [passwordValid,setPasswordValid] =useState(true)
 
+    const validation=(fieldName,value)=>{
+      switch (fieldName) {
+        case 'email':
+          return value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+      case 'password':
+               return value.length>=6;
+        default:
+          break;
+      }
+
+    }
     const onClickHandler=(e)=>{
         e.preventDefault();
+
+        if(!validation('email',email) || !validation('password',pass)){
+          setEmailValid(validation('email',email))
+          setPasswordValid(validation('password',pass))
+          return;
+        }
+
         if(page){
            
             signInWithEmailAndPassword(auth,email,pass)
@@ -37,7 +57,7 @@ const Login=()=>{
        
     }
 
-    useState(()=>{
+    useEffect(()=>{
         setUserExist(false);
         setEmailUsed(false);
     },[location]);
@@ -60,13 +80,15 @@ const Login=()=>{
             onChange={emailOnChangehandler}
             type="email" 
             placeholder="Email"/>
-        
+            
+            {!emailValid && <p className="text-danger">Email is invalid</p>}
           <input 
             className="form-control"
             value={pass}
             onChange={(e)=>{setPass(e.target.value)}}
             type="password" 
             placeholder="Password"/>
+            {!passwordValid && <p className="text-danger">Password is invalid</p>}
           <button className="btn btn-danger btn-block" onClick={onClickHandler} >
           {page ?'Sign In ' : 'Sign Up'}
           </button>
